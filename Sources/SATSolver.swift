@@ -1,7 +1,7 @@
 
 public enum SATSolverResult {
-    case SAT
-    case UNSAT
+    case satisfiable
+    case unsatisfiable
 }
 
 public protocol SATSolver {
