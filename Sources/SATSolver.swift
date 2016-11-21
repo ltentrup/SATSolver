@@ -4,16 +4,25 @@ public enum SATSolverResult {
     case unsatisfiable
 }
 
-public protocol SATSolver {
-    func add(literal: Int)
-    func assume(literal: Int)
-    func solve() -> SATSolverResult
-    func value(of literal: Int) -> Int
-    func failed(literal: Int) -> Bool
+public enum SATSolverLiteralValue {
+    case positive
+    case negative
+    case unassigned
 }
 
-public extension SATSolver {
-    func add(clause: [Int]) {
+public protocol SATSolver {
+    associatedtype Literal
+    
+    func new() -> Literal
+    func add(literal: Literal)
+    func assume(literal: Literal)
+    func solve() -> SATSolverResult
+    func value(of literal: Literal) -> SATSolverLiteralValue
+    func failed(literal: Literal) -> Bool
+}
+
+public extension SATSolver where Literal: Integer {
+    func add(clause: [Literal]) {
         clause.forEach({ add(literal: $0) })
         add(literal: 0)
     }
