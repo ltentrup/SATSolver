@@ -3,11 +3,11 @@ public struct CNF<Literal> {
     public typealias Clause = [Literal]
     public var matrix: [Clause]
     
-    init() {
+    public init() {
         matrix = []
     }
     
-    mutating func add(clause: Clause) {
+    public mutating func add(clause: Clause) {
         matrix.append(clause)
     }
 }
