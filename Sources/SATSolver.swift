@@ -28,10 +28,14 @@ public extension SATSolver where Literal: Integer {
         add(literal: 0)
     }
     
-    init(cnf: CNF<Literal>) {
-        self.init()
-        for clause in cnf.matrix {
+    func add(matrix: CNF<Literal>) {
+        for clause in matrix.matrix {
             add(clause: clause)
         }
+    }
+    
+    init(matrix: CNF<Literal>) {
+        self.init()
+        add(matrix: matrix)
     }
 }
