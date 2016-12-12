@@ -10,6 +10,11 @@ public struct CNF<Literal>: CustomStringConvertible where Literal: SignedInteger
         matrix = []
     }
     
+    public mutating func new() -> Literal {
+        maxVar = maxVar + 1
+        return maxVar
+    }
+    
     public mutating func add(clause: Clause) {
         matrix.append(clause)
         for variable in clause.map(abs) {
