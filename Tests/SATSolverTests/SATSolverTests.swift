@@ -7,7 +7,7 @@ class SATSolverTests: XCTestCase {
         cnf.add(clause: [1, 2, 3])
         cnf.add(clause: [-1, -2])
         XCTAssertEqual(cnf.maxVar, 3)
-        XCTAssertEqual(cnf.matrix.count, 2)
+        XCTAssertEqual(cnf.numClauses, 2)
     }
 
 

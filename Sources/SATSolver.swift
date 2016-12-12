@@ -29,7 +29,7 @@ public extension SATSolver where Literal: SignedInteger {
     }
     
     func add(matrix: CNF<Literal>) {
-        for clause in matrix.matrix {
+        for clause in matrix {
             add(clause: clause)
         }
     }
