@@ -22,7 +22,7 @@ public protocol SATSolver {
     func failed(literal: Literal) -> Bool
 }
 
-public extension SATSolver where Literal: Integer {
+public extension SATSolver where Literal: SignedInteger {
     func add(clause: [Literal]) {
         clause.forEach({ add(literal: $0) })
         add(literal: 0)
