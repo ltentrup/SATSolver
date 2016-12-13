@@ -25,13 +25,42 @@ public struct CNF<Literal>: CustomStringConvertible, Sequence where Literal: Sig
         return maxVar
     }
     
-    public mutating func add(clause: Clause) {
+    public mutating func add(clause insert: Clause, simplify: Bool = false) {
+        let clause = insert.sorted()
+        if simplify {
+            _matrix = _matrix.filter { !clauseSubsumption(base: clause, other: $0) }
+        }
         _matrix.append(clause)
         for variable in clause.map(abs) {
             if variable > maxVar {
                 maxVar = variable
             }
         }
+    }
+    
+    func clauseSubsumption(base clause: Clause, other: Clause) -> Bool {
+        // precondition: self and other are ordered
+        var j = 0
+        for i in 0..<clause.count {
+            if j >= other.count {
+                return false
+            }
+            while j < other.count {
+                
+                let element = clause[i]
+                let match = other[j]
+                
+                if match < element {
+                    j += 1
+                } else if match == element {
+                    j += 1
+                    break
+                } else {
+                    return false
+                }
+            }
+        }
+        return true
     }
     
     // Conforming to CustomStringConvertible
@@ -48,3 +77,4 @@ public struct CNF<Literal>: CustomStringConvertible, Sequence where Literal: Sig
         return _matrix.makeIterator()
     }
 }
+
