@@ -67,6 +67,10 @@ public struct CNF<Literal>: CustomStringConvertible, Sequence where Literal: Sig
             return
         }
         
+        while maxVar > solver.maxVar {
+            let _ = solver.new()
+        }
+        
         var matrix = _matrix.sorted(by: { $0.count > $1.count })
         _matrix.removeAll(keepingCapacity: true)
         let firstClause = matrix.popLast()!
