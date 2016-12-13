@@ -38,6 +38,10 @@ public struct CNF<Literal>: CustomStringConvertible, Sequence where Literal: Sig
         }
     }
     
+    /**
+     * Checks if clause `base` subsumes clause `other`.
+     * This is the case if all literals in `base` are also contained in `other`.
+     */
     func clauseSubsumption(base clause: Clause, other: Clause) -> Bool {
         // precondition: self and other are ordered
         var j = 0
@@ -61,6 +65,27 @@ public struct CNF<Literal>: CustomStringConvertible, Sequence where Literal: Sig
             }
         }
         return true
+    }
+    
+    public mutating func compress<A>(solver: A) where A: SATSolver, A.Literal == Literal {
+        if numClauses == 0 {
+            return
+        }
+        
+        var matrix = _matrix.sorted(by: { $0.count > $1.count })
+        _matrix.removeAll(keepingCapacity: true)
+        let firstClause = matrix.popLast()!
+        solver.add(clause: firstClause)
+        add(clause: firstClause, simplify: false)
+        
+        while matrix.count > 0 {
+            let clause = matrix.popLast()!
+            clause.map(-).forEach({ solver.assume(literal: $0) })
+            if solver.solve() == .satisfiable {
+                solver.add(clause: clause)
+                add(clause: clause, simplify: false)
+            }
+        }
     }
     
     // Conforming to CustomStringConvertible
