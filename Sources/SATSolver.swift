@@ -13,6 +13,8 @@ public enum SATSolverLiteralValue {
 public protocol SATSolver {
     associatedtype Literal
     
+    var maxVar: Literal { get }
+    
     init()
     func new() -> Literal
     func add(literal: Literal)
@@ -34,6 +36,9 @@ public extension SATSolver where Literal: SignedInteger {
     }
     
     func add(matrix: CNF<Literal>) {
+        while matrix.maxVar > maxVar {
+            let _ = new()
+        }
         for clause in matrix {
             add(clause: clause)
         }

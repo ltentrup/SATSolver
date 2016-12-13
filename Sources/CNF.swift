@@ -6,11 +6,6 @@ public struct CNF<Literal>: CustomStringConvertible, Sequence where Literal: Sig
     var _matrix: [Clause]
     public var maxVar: Literal
     
-    @available(*, deprecated)
-    public var matrix: [Clause] {
-        return _matrix
-    }
-    
     public var numClauses: Int {
         return _matrix.count
     }
