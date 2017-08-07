@@ -24,6 +24,15 @@ public protocol SATSolver {
     func failed(literal: Literal) -> Bool
 }
 
+public extension SATSolver {
+    func solve(assumptions: [Literal]) -> SATSolverResult {
+        for assumption in assumptions {
+            assume(literal: assumption)
+        }
+        return solve()
+    }
+}
+
 public extension SATSolver where Literal: SignedInteger {
     init(matrix: CNF<Literal>) {
         self.init()
